@@ -51,9 +51,9 @@ export function SignIn() {
         className: "bg-green-300 text-gray-100"
       });
 
-      // Definindo um cookie com 24 horas de expiração
-      Cookies.set("bankXYZ@user-token", token, { expires: 1 });
-      Cookies.set("bankXYZ@user-id", user.id.toString(), { expires: 1 });
+      // Definindo um cookie com 24 horas (1 dia) de expiração
+      Cookies.set("bankXYZ@user-token", token, { expires: 1, path: "/" });
+      Cookies.set("bankXYZ@user-id", user.id.toString(), { expires: 1, path: "/" });
     } catch (err) {
       const error = err as AxiosError;
 

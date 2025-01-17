@@ -5,7 +5,7 @@ export function AuthLayout() {
   return (
     <div className="grid min-h-screen grid-cols-1 antialiased lg:grid-cols-2">
       <div className="relative hidden h-full flex-col justify-between bg-green-200 p-10 text-muted-foreground lg:flex">
-        <div className="flex items-end gap-3 text-lg font-medium text-foreground">
+        <div className="flex items-end gap-3">
           <Landmark className="h-20 w-20" />
 
           <span className="text-7xl font-bold">Banco XYZ</span>

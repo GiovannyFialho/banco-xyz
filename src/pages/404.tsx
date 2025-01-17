@@ -6,12 +6,12 @@ export function NotFound() {
   const correctLink = Cookies.get("bankXYZ@user-token") ? "/" : "/sign-in";
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-3">
+    <div className="flex h-screen flex-col items-center justify-center gap-3 px-3">
       <Landmark size={240} />
 
       <div className="flex flex-col items-center justify-center gap-2">
-        <h1 className="text-4xl font-bold">Ops! Página não encontrada</h1>
-        <p className="text-lg font-light">
+        <h1 className="text-center text-4xl font-bold">Ops! Página não encontrada</h1>
+        <p className="text-center text-lg font-light">
           Parece que você tentou acessar uma página que não existe ou foi removida.
         </p>
 
