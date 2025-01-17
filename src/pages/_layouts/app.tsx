@@ -1,6 +1,17 @@
-import { Outlet } from "react-router";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router";
 
 export function AppLayout() {
+  const navigate = useNavigate();
+
+  const userToken = localStorage.getItem("bankXYZ@user-token");
+
+  useEffect(() => {
+    if (!userToken) {
+      navigate("/sign-in", { replace: true });
+    }
+  }, [userToken, navigate]);
+
   return (
     <div className="flex min-h-screen flex-col antialiased">
       <header>
