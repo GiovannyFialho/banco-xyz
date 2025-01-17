@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
@@ -7,7 +8,7 @@ export function AppLayout() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userToken = localStorage.getItem("bankXYZ@user-token");
+    const userToken = Cookies.get("bankXYZ@user-token");
 
     if (!userToken) {
       navigate("/sign-in", { replace: true });

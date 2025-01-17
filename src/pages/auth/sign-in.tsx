@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import Cookies from "js-cookie";
 import { Lock, Mail, MoveRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -50,8 +51,9 @@ export function SignIn() {
         className: "bg-green-300 text-gray-100"
       });
 
-      localStorage.setItem(`bankXYZ@user-token`, token);
-      localStorage.setItem(`bankXYZ@user-id`, user.id.toString());
+      // Definindo um cookie com 24 horas de expiração
+      Cookies.set("bankXYZ@user-token", token, { expires: 1 });
+      Cookies.set("bankXYZ@user-id", user.id.toString(), { expires: 1 });
     } catch (err) {
       const error = err as AxiosError;
 
