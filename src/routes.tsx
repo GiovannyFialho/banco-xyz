@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 
 import { AppLayout } from "@/pages/_layouts/app";
-import { Balance } from "@/pages/app/balance";
+import { Account } from "@/pages/app/account";
 import { Profile } from "@/pages/app/profile";
 
 import { AuthLayout } from "@/pages/_layouts/auth";
@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     children: [
-      { path: "/", element: <Balance /> },
+      { path: "/", element: <Account /> },
       { path: "/profile", element: <Profile /> }
     ]
   },
