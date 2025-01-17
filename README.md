@@ -1,4 +1,4 @@
-# Banco XYZ
+# Banco XYZ 🏦
 
 ## Instalação de dependência
 ```
