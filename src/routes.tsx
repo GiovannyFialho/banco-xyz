@@ -6,6 +6,8 @@ import { Balance } from "@/pages/app/balance";
 import { AuthLayout } from "@/pages/_layouts/auth";
 import { SignIn } from "@/pages/auth/sign-in";
 
+import { NotFound } from "@/pages/404";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -16,5 +18,9 @@ export const router = createBrowserRouter([
     path: "/",
     element: <AuthLayout />,
     children: [{ path: "/sign-in", element: <SignIn /> }]
+  },
+  {
+    path: "*",
+    element: <NotFound />
   }
 ]);
