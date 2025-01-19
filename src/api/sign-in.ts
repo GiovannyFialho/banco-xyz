@@ -15,11 +15,9 @@ export interface SignInBody {
 }
 
 export async function signIn({ email, password }: SignInBody) {
-  const convertPassword = Number(password);
-
   const response = await axios.post<SignResponseData>("/login", {
     email,
-    password: convertPassword
+    password
   });
 
   return response.data;

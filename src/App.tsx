@@ -6,14 +6,17 @@ import { router } from "@/routes";
 
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { UserContextProvider } from "@/contexts/user-context";
 
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <RouterProvider router={router} />
-      </TooltipProvider>
+      <UserContextProvider>
+        <TooltipProvider>
+          <Toaster />
+          <RouterProvider router={router} />
+        </TooltipProvider>
+      </UserContextProvider>
     </QueryClientProvider>
   );
 }

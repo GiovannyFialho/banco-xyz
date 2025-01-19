@@ -10,7 +10,7 @@ export function AppLayout() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userToken = Cookies.get("bankXYZ@user-token");
+    const userToken = Cookies.get("bankXYZ@user-auth");
 
     if (!userToken) {
       navigate("/sign-in", { replace: true });

@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { Lock, Mail, MoveRight } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { z } from "zod";
 
+import { useUser } from "@/contexts/user-context";
 import { useToast } from "@/hooks/use-toast";
 
 import { signIn } from "@/api/sign-in";
@@ -25,6 +26,9 @@ type SignInFormData = z.infer<typeof signInFormSchema>;
 
 export function SignIn() {
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const { setUserData } = useUser();
 
   const {
     register,
@@ -42,34 +46,41 @@ export function SignIn() {
     const { email, password } = data;
 
     try {
-      const { token, user } = await authenticate({ email, password });
+      const response = await authenticate({ email, password });
+
+      // Validação dos dados retornados
+      if (!response || !response.token || !response.user) {
+        throw new Error("Dados inválidos retornados pela API.");
+      }
+
+      const { token, user } = response;
 
       toast({
         variant: "default",
         title: "Sucesso",
         description: `Login efetuado com sucesso! Bem-vindo, ${user.name}`,
-        className: "bg-green-300 text-gray-100"
+        className: "bg-green-300 text-gray-100",
+        duration: 3000
       });
 
-      // Definindo um cookie com 24 horas (1 dia) de expiração
-      Cookies.set("bankXYZ@user-token", token, { expires: 1, path: "/" });
-      Cookies.set("bankXYZ@user-id", user.id.toString(), { expires: 1, path: "/" });
-    } catch (err) {
-      const error = err as AxiosError;
+      // Atualizando o contexto do usuário
+      setUserData({ token, user });
 
-      if (error.response?.status === 401) {
-        toast({
-          title: "Ops!",
-          description: "Credenciais inválidas, tente login e senha válidos",
-          className: "bg-red-500 text-gray-100"
-        });
-      } else {
-        toast({
-          title: "Ops!",
-          description: "Algo deu errado. Por favor, tente novamente mais tarde",
-          className: "bg-red-500 text-gray-100"
-        });
-      }
+      // Definindo um cookie com 24 horas (1 dia) de expiração
+      Cookies.set("bankXYZ@user-auth", "true", { expires: 1, path: "/" });
+
+      // Navegando para a página inicial
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error("Erro no login:", error);
+
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Falha ao efetuar login. Verifique suas credenciais.",
+        className: "bg-red-300 text-gray-100",
+        duration: 3000
+      });
     }
   }
 
@@ -92,7 +103,7 @@ export function SignIn() {
         <div className="flex flex-col gap-2">
           <div className="border-1 flex items-center gap-1 rounded-md border border-green-800 p-2">
             <Lock />
-            <Input type="password" placeholder="********" {...register("password")} />
+            <Input type="password" placeholder="****" {...register("password")} />
           </div>
 
           {errors.password?.message && (

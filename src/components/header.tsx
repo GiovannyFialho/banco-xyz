@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router";
 
 import { signOut } from "@/api/sign-out";
 
+import { useUser } from "@/contexts/user-context";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +17,7 @@ import {
 
 export function Header() {
   const navigate = useNavigate();
+  const { user } = useUser();
 
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
@@ -33,7 +36,7 @@ export function Header() {
 
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <h2 className="text-lg font-bold">Giovanny Fialho</h2>
+          <h2 className="text-lg font-bold">{user?.name}</h2>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="center" className="w-40">
