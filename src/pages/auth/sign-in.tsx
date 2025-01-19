@@ -78,7 +78,7 @@ export function SignIn() {
         variant: "destructive",
         title: "Erro",
         description: "Falha ao efetuar login. Verifique suas credenciais.",
-        className: "bg-red-300 text-gray-100",
+        className: "bg-red-600 text-gray-100",
         duration: 3000
       });
     }
