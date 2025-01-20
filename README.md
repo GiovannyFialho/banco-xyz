@@ -44,7 +44,7 @@ npm run dev
 ```
 2. O servidor será iniciado em:
 ```
-http://localhost:3000
+http://localhost:5173
 ```
 
 ## Tecnologias Utilizadas
