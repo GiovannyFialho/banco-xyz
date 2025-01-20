@@ -1,6 +1,6 @@
 import axios from "axios";
 
-interface BalanceResponse {
+export interface BalanceResponse {
   currency: string;
   accountBalance: number;
 }

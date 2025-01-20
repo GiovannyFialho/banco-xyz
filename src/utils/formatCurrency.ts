@@ -4,6 +4,10 @@ interface FormatCurrency {
 }
 
 export function formatCurrency(value?: number, currency?: string): FormatCurrency {
+  if (!value && !currency) {
+    return { symbol: "", formattedValue: "" };
+  }
+
   const formatter = new Intl.NumberFormat(currency, {
     style: "currency",
     currency
