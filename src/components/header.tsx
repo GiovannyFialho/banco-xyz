@@ -17,7 +17,7 @@ import {
 
 export function Header() {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, clearUserData } = useUser();
 
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
@@ -53,7 +53,10 @@ export function Header() {
               type="button"
               disabled={isSigningOut}
               className="w-full"
-              onClick={() => signOutFn()}
+              onClick={() => {
+                clearUserData();
+                signOutFn();
+              }}
             >
               <LogOut className="mr-2 h-4 w-4" />
               <span>Sair</span>

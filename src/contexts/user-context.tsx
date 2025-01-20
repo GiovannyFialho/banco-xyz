@@ -1,4 +1,6 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+
+import { decryptData, encryptData } from "@/utils/crypto";
 
 interface User {
   id: number;
@@ -6,7 +8,7 @@ interface User {
   email: string;
 }
 
-interface UserData {
+export interface UserData {
   token: string;
   user: User | null;
 }
@@ -15,6 +17,7 @@ interface UserContextType {
   token: string;
   user: User | null;
   setUserData: (data: UserData) => void;
+  clearUserData: () => void;
 }
 
 export const UserContext = createContext({} as UserContextType);
@@ -24,8 +27,35 @@ interface UserContextProviderProps {
 }
 
 export function UserContextProvider({ children }: UserContextProviderProps) {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("userData");
+
+    if (storedData) {
+      try {
+        const parsedData: UserData = decryptData(storedData);
+
+        setToken(parsedData.token);
+        setUser(parsedData.user);
+      } catch (error) {
+        console.error("Erro ao descriptografar dados do localStorage:", error);
+        clearUserData();
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (token && user) {
+      const data: UserData = { token, user };
+      const encryptedData = encryptData(data);
+
+      localStorage.setItem("userData", encryptedData);
+    } else {
+      localStorage.removeItem("userData");
+    }
+  }, [token, user]);
 
   const setUserData = (data: UserData) => {
     if (!data.token || !data.user) {
@@ -36,8 +66,17 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     setUser(data.user);
   };
 
+  const clearUserData = () => {
+    setToken("");
+    setUser(null);
+
+    localStorage.removeItem("userData");
+  };
+
   return (
-    <UserContext.Provider value={{ token, user, setUserData }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ token, user, setUserData, clearUserData }}>
+      {children}
+    </UserContext.Provider>
   );
 }
 
