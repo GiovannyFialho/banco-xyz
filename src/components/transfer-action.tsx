@@ -45,7 +45,7 @@ export function TransferAction() {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="h-auto w-max bg-green-900 px-6 py-3 text-base hover:bg-green-950">
+          <Button className="h-auto w-max bg-green-400 px-6 py-3 text-lg font-bold text-green-950 hover:bg-green-500">
             Nova transferência
             <Plus />
           </Button>
@@ -71,7 +71,7 @@ export function TransferAction() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="h-auto w-full bg-green-900 px-6 py-3 text-base hover:bg-green-950">
+        <Button className="h-auto w-full bg-green-400 px-6 py-3 text-lg font-bold text-green-950 hover:bg-green-500">
           Nova transferência
           <Plus />
         </Button>
@@ -101,7 +101,7 @@ export function TransferAction() {
 
 const transferFormSchema = z.object({
   value: z
-    .string()
+    .string({ message: "Campo obrigatório" })
     .min(1, { message: "Campo obrigatório" })
     .transform((val) => {
       const num = Number(val);

@@ -112,7 +112,7 @@
     }
 
     &::-webkit-scrollbar-track {
-      background: var(--green-200);
+      background: var(--green-100);
     }
 
     &::-webkit-scrollbar-thumb {
