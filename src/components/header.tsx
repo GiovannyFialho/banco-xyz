@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { Landmark, LogOut } from "lucide-react";
+import { ChevronDown, Landmark, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 
 import { signOut } from "@/api/sign-out";
@@ -34,36 +34,39 @@ export function Header() {
         <span className="text-lg font-bold">Banco XYZ</span>
       </Link>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <h2 className="text-lg font-bold">{user?.name}</h2>
-        </DropdownMenuTrigger>
+      <nav>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex items-center gap-2">
+            <h2 className="text-lg font-bold">{user?.name}</h2>
+            <ChevronDown size={20} />
+          </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="center" className="w-40">
-          <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild className="cursor-pointer">
-            <Link to="/profile">Perfil</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild className="cursor-pointer">
-            <Link to="/">Saldo</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild className="cursor-pointer">
-            <button
-              type="button"
-              disabled={isSigningOut}
-              className="w-full"
-              onClick={() => {
-                clearUserData();
-                signOutFn();
-              }}
-            >
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Sair</span>
-            </button>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          <DropdownMenuContent align="center" className="ml-4 w-72 lg:ml-0 lg:w-40">
+            <DropdownMenuLabel className="text-base">Minha conta</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild className="cursor-pointer text-base">
+              <Link to="/profile">Perfil</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild className="cursor-pointer text-base">
+              <Link to="/">Saldo</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild className="cursor-pointer text-base">
+              <button
+                type="button"
+                disabled={isSigningOut}
+                className="w-full"
+                onClick={() => {
+                  clearUserData();
+                  signOutFn();
+                }}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Sair</span>
+              </button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </nav>
     </header>
   );
 }
