@@ -48,7 +48,6 @@ export function SignIn() {
     try {
       const response = await authenticate({ email, password });
 
-      // Validação dos dados retornados
       if (!response || !response.token || !response.user) {
         throw new Error("Dados inválidos retornados pela API.");
       }
@@ -59,17 +58,14 @@ export function SignIn() {
         variant: "default",
         title: "Sucesso",
         description: `Login efetuado com sucesso! Bem-vindo, ${user.name}`,
-        className: "bg-green-300 text-gray-100",
+        className: "bg-green-600 text-gray-100 border-0",
         duration: 3000
       });
 
-      // Atualizando o contexto do usuário
       setUserData({ token, user });
 
-      // Definindo um cookie com 24 horas (1 dia) de expiração
       Cookies.set("bankXYZ@user-auth", "true", { expires: 1, path: "/" });
 
-      // Navegando para a página inicial
       navigate("/", { replace: true });
     } catch (error) {
       console.error("Erro no login:", error);
@@ -78,7 +74,7 @@ export function SignIn() {
         variant: "destructive",
         title: "Erro",
         description: "Falha ao efetuar login. Verifique suas credenciais.",
-        className: "bg-red-600 text-gray-100",
+        className: "bg-red-600 text-gray-100 border-0",
         duration: 3000
       });
     }

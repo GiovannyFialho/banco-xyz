@@ -1,10 +1,20 @@
-import { DollarSign, Info, Plus } from "lucide-react";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { CalendarIcon, CircleDollarSign, DollarSign, FileUser, Info, Plus } from "lucide-react";
+import { ComponentProps, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { NumericFormat } from "react-number-format";
+import { z } from "zod";
 
+import { transfer } from "@/api/transfer";
+import { useUser } from "@/contexts/user-context";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 
+import { DatePicker } from "@/components/date-picker";
+import { SelectCurrency } from "@/components/select-currency";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -52,7 +62,7 @@ export function TransferAction() {
             </DialogDescription>
           </DialogHeader>
 
-          <ProfileForm />
+          <TransferForm onClose={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
     );
@@ -77,7 +87,7 @@ export function TransferAction() {
           </DrawerDescription>
         </DrawerHeader>
 
-        <ProfileForm className="px-4" />
+        <TransferForm className="px-4" onClose={() => setOpen(false)} />
 
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
@@ -89,39 +99,208 @@ export function TransferAction() {
   );
 }
 
-function ProfileForm({ className }: React.ComponentProps<"form">) {
-  const [value, setValue] = useState("");
+const transferFormSchema = z.object({
+  value: z
+    .string()
+    .min(1, { message: "Campo obrigatório" })
+    .transform((val) => {
+      const num = Number(val);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let inputValue = e.target.value.replace(/\D/g, "");
+      if (isNaN(num)) {
+        throw new Error("O valor não é um número válido");
+      }
 
-    inputValue = inputValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return num;
+    }),
+  currency: z.enum(["USD", "EUR", "BRL"], { message: "Campo obrigatório" }),
+  payeerDocument: z
+    .string()
+    .min(11, { message: "O documento deve conter pelo menos 11 números" })
+    .max(11, { message: "O ducumento só pode ter 11 números" })
+    .regex(/^\d+$/, { message: "O documento deve conter apenas números" }),
+  transferDate: z.date({ message: "Campo obrigatório" })
+});
 
-    setValue(inputValue);
-  };
+type TransferFormData = z.infer<typeof transferFormSchema>;
+
+interface TransferFormProps extends ComponentProps<"form"> {
+  onClose: () => void;
+}
+
+function TransferForm({ className, onClose }: TransferFormProps) {
+  const { token } = useUser();
+  const { toast } = useToast();
+
+  const {
+    register,
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<TransferFormData>({
+    resolver: zodResolver(transferFormSchema)
+  });
+
+  const { mutateAsync: transferFn } = useMutation({
+    mutationFn: transfer
+  });
+
+  async function handleSendTransfer(data: TransferFormData) {
+    const { value, currency, payeerDocument, transferDate } = data;
+
+    try {
+      const response = await transferFn({ token, value, currency, payeerDocument, transferDate });
+
+      if (response.status === "success") {
+        toast({
+          variant: "default",
+          title: "Sucesso",
+          description: "transferência efetuada com sucesso",
+          className: "bg-green-600 text-gray-100 border-0",
+          duration: 3000
+        });
+
+        onClose();
+      }
+    } catch (error) {
+      console.error("Erro no login:", error);
+
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Falha ao efetuar transferência. Tente novamente mais tarde.",
+        className: "bg-red-600 text-gray-100 border-0",
+        duration: 3000
+      });
+    }
+  }
 
   return (
-    <form className={cn("grid items-start gap-4", className)}>
-      <div className="flex items-center rounded-sm border border-green-400 px-3 pl-0">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div className="relative flex h-9 w-9 items-center justify-center">
-              <DollarSign size={20} />
+    <form
+      onSubmit={handleSubmit(handleSendTransfer)}
+      className={cn("grid items-start gap-4", className)}
+    >
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center rounded-sm border border-green-400 px-3 pl-0">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="relative flex h-9 w-11 items-center justify-center">
+                <DollarSign size={20} />
 
-              <Info size={10} className="absolute right-0 top-1" />
-            </div>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Preencha o valor que você deseja transferir</p>
-          </TooltipContent>
-        </Tooltip>
+                <Info size={10} className="absolute right-0 top-1" />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Preencha o valor que você deseja transferir</p>
+            </TooltipContent>
+          </Tooltip>
 
-        <Input placeholder="30" value={value} onChange={handleChange} />
+          <Controller
+            control={control}
+            name="value"
+            render={({ field }) => (
+              <NumericFormat
+                value={field.value}
+                customInput={Input}
+                thousandSeparator="."
+                decimalSeparator=","
+                allowNegative={false}
+                onValueChange={(values) => field.onChange(values.value)}
+              />
+            )}
+          />
+        </div>
+
+        {errors.value?.message && (
+          <span className="text-sm text-red-500">{errors.value?.message}</span>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center rounded-sm border border-green-400">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="relative flex h-9 w-11 items-center justify-center">
+                <CircleDollarSign size={20} />
+
+                <Info size={10} className="absolute right-0 top-1" />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Escolha uma das moedas para sua transferência</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Controller
+            control={control}
+            name="currency"
+            render={({ field }) => <SelectCurrency field={field} />}
+          />
+        </div>
+
+        {errors.currency?.message && (
+          <span className="text-sm text-red-500">{errors.currency?.message}</span>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center rounded-sm border border-green-400">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="relative flex h-9 w-11 items-center justify-center">
+                <FileUser size={20} />
+
+                <Info size={10} className="absolute right-0 top-1" />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Preencha o documento da pessoa para quem você quer fazer a transferência</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Input
+            placeholder="Digite o número do documento"
+            {...register("payeerDocument")}
+            maxLength={11}
+          />
+        </div>
+
+        {errors.payeerDocument?.message && (
+          <span className="text-sm text-red-500">{errors.payeerDocument?.message}</span>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center rounded-sm border border-green-400">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="relative flex h-9 w-11 items-center justify-center">
+                <CalendarIcon size={20} />
+
+                <Info size={10} className="absolute right-0 top-1" />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Escolha a data de transferência</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <DatePicker
+            onDateSelected={(date) => {
+              setValue("transferDate", date);
+            }}
+          />
+        </div>
+
+        {errors.transferDate?.message && (
+          <span className="text-sm text-red-500">{errors.transferDate?.message}</span>
+        )}
       </div>
 
       <Button
         type="submit"
-        className="h-auto bg-green-400 px-5 py-3 text-2xl font-bold text-gray-950 hover:bg-green-500"
+        className="h-auto bg-green-400 px-5 py-3 text-2xl font-bold text-green-950 hover:bg-green-500"
+        disabled={isSubmitting}
       >
         Transferir
       </Button>
