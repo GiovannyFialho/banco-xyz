@@ -26,10 +26,14 @@ Banco XYZ é uma aplicação simples que simula funcionalidades básicas de um b
 
 ## Instalação
 1. Clone o repositório:
-    - git clone git@github.com:GiovannyFialho/banco-xyz.git
-    - cd banco-xyz
+```
+git clone git@github.com:GiovannyFialho/banco-xyz.git
+```
+```
+cd banco-xyz
+```
 
-2. Instale as dependências:
+1. Instale as dependências:
 ```
 npm install
 ```
@@ -46,4 +50,4 @@ http://localhost:3000
 
 ## Tecnologias Utilizadas
 - Frontend: Vite.js (React.js) + TypeScript
-- Estilização: Tailwind CSS
+- Estilização: Tailwind CSS + Shadcn/ui
