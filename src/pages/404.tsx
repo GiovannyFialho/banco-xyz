@@ -3,7 +3,7 @@ import { Landmark } from "lucide-react";
 import { Link } from "react-router";
 
 export function NotFound() {
-  const correctLink = Cookies.get("bankXYZ@user-token") ? "/" : "/sign-in";
+  const correctLink = Cookies.get("bankXYZ@user-auth") ? "/" : "/sign-in";
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-3 px-3">

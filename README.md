@@ -4,7 +4,7 @@ Banco XYZ é uma aplicação simples que simula funcionalidades básicas de um b
 - Fazer login com suas credenciais.
 - Visualizar o saldo e uma lista de transferências na página inicial.
 - Realizar transferências através de um modal acessível na página de listagem de transferências.
-- Visualizar informações do perfil, como nome, e-mail e token do usuário.
+- Visualizar informações do perfil, como nome e e-mail.
 
 ## Funcionalidades Principais
 
@@ -19,7 +19,6 @@ Banco XYZ é uma aplicação simples que simula funcionalidades básicas de um b
    - Exibição de informações do usuário logado, incluindo:
      - Nome.
      - E-mail.
-     - Token de autenticação.
 
 ## Requisitos
 - Node.js (versão 22.12.0 ou superior)
