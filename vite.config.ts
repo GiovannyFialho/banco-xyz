@@ -20,6 +20,11 @@ export default defineConfig({
         target: "https://2k0ic4z7s5.execute-api.us-east-1.amazonaws.com",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/balance/, "/default/balance")
+      },
+      "/transferList": {
+        target: "https://n0qaa2fx3c.execute-api.us-east-1.amazonaws.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/transferList/, "/default/transferList")
       }
     }
   }
