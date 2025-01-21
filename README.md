@@ -48,5 +48,5 @@ http://localhost:5173
 ```
 
 ## Tecnologias Utilizadas
-- Frontend: Vite.js (React.js) + TypeScript
+- Frontend: React.js + TypeScript
 - Estilização: Tailwind CSS + Shadcn/ui
