@@ -1,7 +1,7 @@
 import { ScrollText } from "lucide-react";
+import { ReactNode } from "react";
 
 import { TransferAction } from "@/components/transfer-action";
-import { ReactNode } from "react";
 
 interface TransactionCardProps {
   children: ReactNode;
@@ -23,9 +23,7 @@ export function TransactionCard({ children }: TransactionCardProps) {
           <p className="text-lg font-semibold text-green-800">Confira suas transferências abaixo</p>
         </div>
 
-        <div className="custom-scrollbar flex max-h-40 flex-col gap-2 overflow-y-auto rounded-lg border border-green-400 bg-green-100 px-5 py-5">
-          {children}
-        </div>
+        {children}
       </div>
 
       <TransferAction />

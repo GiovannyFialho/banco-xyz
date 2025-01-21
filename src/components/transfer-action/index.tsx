@@ -44,7 +44,7 @@ export function TransferAction() {
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
+        <DialogTrigger asChild data-testid="trigger-transfer">
           <Button className="h-auto w-max bg-green-400 px-6 py-3 text-lg font-bold text-green-950 hover:bg-green-500">
             Nova transferência
             <Plus />
@@ -179,6 +179,7 @@ function TransferForm({ className, onClose }: TransferFormProps) {
     <form
       onSubmit={handleSubmit(handleSendTransfer)}
       className={cn("grid items-start gap-4", className)}
+      data-testid="form-transfer"
     >
       <div className="flex flex-col gap-2">
         <div className="flex items-center rounded-sm border border-green-400 px-3 pl-0">
@@ -190,6 +191,7 @@ function TransferForm({ className, onClose }: TransferFormProps) {
                 <Info size={10} className="absolute right-0 top-1" />
               </div>
             </TooltipTrigger>
+
             <TooltipContent>
               <p>Preencha o valor que você deseja transferir</p>
             </TooltipContent>
@@ -206,13 +208,16 @@ function TransferForm({ className, onClose }: TransferFormProps) {
                 decimalSeparator=","
                 allowNegative={false}
                 onValueChange={(values) => field.onChange(values.value)}
+                data-testid="field-value"
               />
             )}
           />
         </div>
 
         {errors.value?.message && (
-          <span className="text-sm text-red-500">{errors.value?.message}</span>
+          <span className="text-sm text-red-500" data-testid="value-error">
+            {errors.value?.message}
+          </span>
         )}
       </div>
 
@@ -226,6 +231,7 @@ function TransferForm({ className, onClose }: TransferFormProps) {
                 <Info size={10} className="absolute right-0 top-1" />
               </div>
             </TooltipTrigger>
+
             <TooltipContent>
               <p>Escolha uma das moedas para sua transferência</p>
             </TooltipContent>
@@ -234,12 +240,14 @@ function TransferForm({ className, onClose }: TransferFormProps) {
           <Controller
             control={control}
             name="currency"
-            render={({ field }) => <SelectCurrency field={field} />}
+            render={({ field }) => <SelectCurrency field={field} data-testid="field-currency" />}
           />
         </div>
 
         {errors.currency?.message && (
-          <span className="text-sm text-red-500">{errors.currency?.message}</span>
+          <span className="text-sm text-red-500" data-testid="currency-error">
+            {errors.currency?.message}
+          </span>
         )}
       </div>
 
@@ -253,6 +261,7 @@ function TransferForm({ className, onClose }: TransferFormProps) {
                 <Info size={10} className="absolute right-0 top-1" />
               </div>
             </TooltipTrigger>
+
             <TooltipContent>
               <p>Preencha o documento da pessoa para quem você quer fazer a transferência</p>
             </TooltipContent>
@@ -266,7 +275,9 @@ function TransferForm({ className, onClose }: TransferFormProps) {
         </div>
 
         {errors.payeerDocument?.message && (
-          <span className="text-sm text-red-500">{errors.payeerDocument?.message}</span>
+          <span className="text-sm text-red-500" data-testid="payeerDocument-error">
+            {errors.payeerDocument?.message}
+          </span>
         )}
       </div>
 
@@ -280,6 +291,7 @@ function TransferForm({ className, onClose }: TransferFormProps) {
                 <Info size={10} className="absolute right-0 top-1" />
               </div>
             </TooltipTrigger>
+
             <TooltipContent>
               <p>Escolha a data de transferência</p>
             </TooltipContent>
@@ -293,7 +305,9 @@ function TransferForm({ className, onClose }: TransferFormProps) {
         </div>
 
         {errors.transferDate?.message && (
-          <span className="text-sm text-red-500">{errors.transferDate?.message}</span>
+          <span className="text-sm text-red-500" data-testid="transferDate-error">
+            {errors.transferDate?.message}
+          </span>
         )}
       </div>
 
@@ -301,6 +315,7 @@ function TransferForm({ className, onClose }: TransferFormProps) {
         type="submit"
         className="h-auto bg-green-400 px-5 py-3 text-2xl font-bold text-green-950 hover:bg-green-500"
         disabled={isSubmitting}
+        data-testid="submit-transfer"
       >
         Transferir
       </Button>

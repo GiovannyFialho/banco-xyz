@@ -39,31 +39,39 @@ export function Account() {
     <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
       <BalanceCard>
         {balanceDataLoading ? (
-          <>
+          <div className="flex gap-3" data-testid="is-loading">
             <Skeleton className="h-10 w-16" />
             <Skeleton className="h-40 w-full" />
-          </>
+          </div>
         ) : balanceData ? (
-          <>
+          <div className="flex gap-3" data-testid="is-ready">
             <span className="text-2xl font-medium text-green-900">{symbol}</span>
             <p className="text-6xl font-bold text-green-950 lg:text-6xl xl:text-9xl">
               {formattedValue}
             </p>
-          </>
+          </div>
         ) : (
-          <p className="text-sm">Saldo indisponível no momento</p>
+          <p className="text-sm" data-testid="error">
+            Saldo indisponível no momento
+          </p>
         )}
       </BalanceCard>
 
       <TransactionCard>
         {transferListDataLoading ? (
-          <>
+          <div
+            className="custom-scrollbar flex max-h-40 flex-col gap-2 overflow-y-auto rounded-lg border border-green-400 bg-green-100 px-5 py-5"
+            data-testid="is-loading"
+          >
             {Array.from({ length: 3 }).map((_, index) => (
               <Skeleton key={index} className="h-20 w-full" />
             ))}
-          </>
+          </div>
         ) : transferListData ? (
-          <>
+          <div
+            className="custom-scrollbar flex max-h-40 flex-col gap-2 overflow-y-auto rounded-lg border border-green-400 bg-green-100 px-5 py-5"
+            data-testid="is-ready"
+          >
             {transferListData.transfers.map((transferItems, index) => (
               <div
                 key={index}
@@ -97,9 +105,11 @@ export function Account() {
                 </div>
               </div>
             ))}
-          </>
+          </div>
         ) : (
-          <p className="text-sm">Lista de transferências indisponível no momento</p>
+          <p className="text-sm" data-testid="error">
+            Lista de transferências indisponível no momento
+          </p>
         )}
       </TransactionCard>
     </div>

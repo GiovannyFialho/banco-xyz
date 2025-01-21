@@ -20,7 +20,7 @@ export function BalanceCard({ children }: BalanceCardProps) {
         <p className="text-lg font-semibold text-green-800">Confira o seu saldo abaixo</p>
       </div>
 
-      <div className="flex gap-3">{children}</div>
+      {children}
     </div>
   );
 }

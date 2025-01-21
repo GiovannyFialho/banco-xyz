@@ -27,16 +27,21 @@ export function Header() {
   });
 
   return (
-    <header className="flex w-full items-center justify-between bg-green-200 px-4 py-8">
+    <header
+      data-testid="header-component"
+      className="flex w-full items-center justify-between bg-green-200 px-4 py-8"
+    >
       <Link to="/" className="hidden items-center gap-2 lg:flex">
         <Landmark size={20} />
 
-        <span className="text-lg font-bold">Banco XYZ</span>
+        <span data-testid="bank-name" className="text-lg font-bold">
+          Banco XYZ
+        </span>
       </Link>
 
       <nav>
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2">
+          <DropdownMenuTrigger className="flex items-center gap-2" data-testid="trigger-menu">
             <h2 className="text-lg font-bold">{user?.name}</h2>
             <ChevronDown size={20} />
           </DropdownMenuTrigger>
