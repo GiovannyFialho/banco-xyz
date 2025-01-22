@@ -1,5 +1,4 @@
 {
-  "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
@@ -9,6 +8,11 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vitest/globals"]
-  }
+    "types": [
+      "vitest/globals",
+      "cypress",
+      "node"
+    ]
+  },
+  "include": ["**/*.ts"]
 }

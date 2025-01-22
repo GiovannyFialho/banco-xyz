@@ -60,6 +60,7 @@ export function Header() {
                 type="button"
                 disabled={isSigningOut}
                 className="w-full"
+                data-testid="trigger-signOut"
                 onClick={() => {
                   clearUserData();
                   signOutFn();

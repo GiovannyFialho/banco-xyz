@@ -88,28 +88,42 @@ export function SignIn() {
         <div className="flex flex-col gap-2">
           <div className="border-1 flex items-center gap-1 rounded-md border border-green-800 p-2">
             <Mail />
-            <Input placeholder="username@teste.com" {...register("email")} />
+            <Input
+              placeholder="username@teste.com"
+              data-testid="fiend-email"
+              {...register("email")}
+            />
           </div>
 
           {errors.email?.message && (
-            <span className="text-sm text-red-500">{errors.email.message}</span>
+            <span className="text-sm text-red-500" data-testid="fiend-error-email">
+              {errors.email.message}
+            </span>
           )}
         </div>
 
         <div className="flex flex-col gap-2">
           <div className="border-1 flex items-center gap-1 rounded-md border border-green-800 p-2">
             <Lock />
-            <Input type="password" placeholder="****" {...register("password")} />
+            <Input
+              type="password"
+              placeholder="****"
+              data-testid="fiend-password"
+              {...register("password")}
+            />
           </div>
 
           {errors.password?.message && (
-            <span className="text-sm text-red-500">{errors.password.message}</span>
+            <span className="text-sm text-red-500" data-testid="fiend-error-password">
+              {errors.password.message}
+            </span>
           )}
         </div>
 
         <Button
           type="submit"
           className="flex h-auto items-center gap-2 bg-green-950 py-2 text-lg font-bold hover:bg-green-700"
+          data-testid="btn-sign-in"
           disabled={isSubmitting}
         >
           Entrar
