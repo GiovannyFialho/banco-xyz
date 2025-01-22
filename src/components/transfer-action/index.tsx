@@ -70,7 +70,7 @@ export function TransferAction() {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
+      <DrawerTrigger asChild data-testid="trigger-transfer">
         <Button className="h-auto w-full bg-green-400 px-6 py-3 text-lg font-bold text-green-950 hover:bg-green-500">
           Nova transferência
           <Plus />
@@ -269,8 +269,9 @@ function TransferForm({ className, onClose }: TransferFormProps) {
 
           <Input
             placeholder="Digite o número do documento"
-            {...register("payeerDocument")}
             maxLength={11}
+            data-testid="field-payeerDocument"
+            {...register("payeerDocument")}
           />
         </div>
 

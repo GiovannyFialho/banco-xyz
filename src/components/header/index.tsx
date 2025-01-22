@@ -50,10 +50,14 @@ export function Header() {
             <DropdownMenuLabel className="text-base">Minha conta</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="cursor-pointer text-base">
-              <Link to="/profile">Perfil</Link>
+              <Link to="/profile" data-testid="trigger-profile">
+                Perfil
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="cursor-pointer text-base">
-              <Link to="/">Saldo</Link>
+              <Link to="/" data-testid="trigger-account">
+                Conta
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="cursor-pointer text-base">
               <button

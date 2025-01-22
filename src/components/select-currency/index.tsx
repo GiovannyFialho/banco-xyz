@@ -25,11 +25,14 @@ interface SelectCurrencyProsp {
 export function SelectCurrency({ field }: SelectCurrencyProsp) {
   return (
     <Select onValueChange={field.onChange} defaultValue={field.value}>
-      <SelectTrigger className="w-full border-0 outline-none focus:ring-0">
+      <SelectTrigger
+        className="w-full border-0 outline-none focus:ring-0"
+        data-testid="field-currency"
+      >
         <SelectValue placeholder="Selecione uma moeda" />
       </SelectTrigger>
 
-      <SelectContent>
+      <SelectContent data-testid="currency-options">
         <SelectGroup>
           <SelectLabel>Moedas</SelectLabel>
           <SelectItem value="USD">Estados Unidos</SelectItem>

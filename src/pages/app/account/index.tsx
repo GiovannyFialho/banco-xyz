@@ -46,7 +46,10 @@ export function Account() {
         ) : balanceData ? (
           <div className="flex gap-3" data-testid="is-ready">
             <span className="text-2xl font-medium text-green-900">{symbol}</span>
-            <p className="text-6xl font-bold text-green-950 lg:text-6xl xl:text-9xl">
+            <p
+              className="text-6xl font-bold text-green-950 lg:text-6xl xl:text-9xl"
+              data-testid="current-balance"
+            >
               {formattedValue}
             </p>
           </div>

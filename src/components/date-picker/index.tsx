@@ -14,18 +14,21 @@ interface DatePickerProps {
 
 export function DatePicker({ onDateSelected }: DatePickerProps) {
   const [date, setDate] = useState<Date>();
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (date) {
-      return onDateSelected(date);
+      onDateSelected(date);
+      setOpen(false);
     }
   }, [date, onDateSelected]);
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
+          data-testid="field-transferDate"
           className={cn(
             "w-full justify-start border-0 text-left font-normal outline-none focus-visible:ring-0",
             !date && "text-muted-foreground"
@@ -35,7 +38,7 @@ export function DatePicker({ onDateSelected }: DatePickerProps) {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="w-auto p-0" align="start" data-testid="calendar">
         <Calendar
           locale={ptBR}
           mode="single"

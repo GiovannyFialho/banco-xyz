@@ -12,12 +12,16 @@ export function Profile() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 border-b border-dashed border-gray-300 pb-4">
           <p className="text-lg font-semibold">Nome:</p>
-          <span className="text-base font-medium">{user?.name}</span>
+          <span className="text-base font-medium" data-testid="profile-name">
+            {user?.name}
+          </span>
         </div>
 
         <div className="flex flex-col gap-1 border-b border-dashed border-gray-300 pb-4">
           <p className="text-lg font-semibold">E-mail:</p>
-          <span className="text-base font-medium">{user?.email}</span>
+          <span className="text-base font-medium" data-testid="profile-email">
+            {user?.email}
+          </span>
         </div>
       </div>
     </div>
