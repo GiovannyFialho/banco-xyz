@@ -1,0 +1,2 @@
+# Generate using the command: `openssl rand -base64 32`.
+VITE_ENCRYPTION_SECRET_KEY=""
